@@ -69,7 +69,6 @@ mongoose.connect(connectionString,
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/resource/teacher', teacherRouter);
 app.use('/teacher', teacherRouter);
 app.use('/addmods', addmodsRouter);
 app.use('/selector', selectorRouter);
