@@ -11,9 +11,16 @@ exports.teacher_list = async function (req, res) {
     }
 };
 // for a specific teacher.
-exports.teacher_detail = function (req, res) {
-    res.send('NOT IMPLEMENTED: teacher detail: ' + req.params.id);
-};
+exports.teacher_detail = async function(req, res) {
+    console.log("detail" + req.params.id)
+    try {
+    result = await teacher.findById( req.params.id)
+    res.send(result)
+    } catch (error) {
+    res.status(500)
+    res.send(`{"error": document for id ${req.params.id} not found`);
+    }
+   };
 // Handle teacher create on POST.
 exports.teacher_create_post = function (req, res) {
     res.send('NOT IMPLEMENTED: teacher create POST');
@@ -23,9 +30,25 @@ exports.teacher_delete = function (req, res) {
     res.send('NOT IMPLEMENTED: teacher delete DELETE ' + req.params.id);
 };
 // Handle teacher update form on PUT.
-exports.teacher_update_put = function (req, res) {
-    res.send('NOT IMPLEMENTED: teacher update PUT' + req.params.id);
-};
+exports.teacher_update_put = async function(req, res) {
+    console.log(`update on id ${req.params.id} with body
+   ${JSON.stringify(req.body)}`)
+    try {
+    let toUpdate = await teacher.findById( req.params.id)
+    // Do updates of properties
+    if(req.body.Name)
+    toUpdate.Name = req.body.Name;
+    if(req.body.Department) toUpdate.Department = req.body.Department;
+    if(req.body.Salary) toUpdate.Salary = req.body.Salary;
+    let result = await toUpdate.save();
+    console.log("Sucess " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": ${err}: Update for id ${req.params.id}
+   failed`);
+    }
+   };
 
 // VIEWS
 // Handle a show all view
